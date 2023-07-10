@@ -43,7 +43,7 @@ loop1:
         je end_loop2 
         mov ah,arr[si]
         cmp ah,arr[di]
-        jg swap
+        jl swap
         jmp loop2
     
     swap:
