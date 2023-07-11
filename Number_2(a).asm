@@ -1,56 +1,48 @@
+.model small
+.stack 100h
+.data
 
-.MODEL SMALL
-.STACK 100H
+msg1 db 'Enter single digit : $'
 
-.DATA
+msg2 db 0dh,0ah,'Even $'  
+msg3 db 0dh,0ah,'Odd $'
 
-    MSG1 DB 'Enter a number (from 0 to 9)',0dh,0ah,'$'
-    MSG2 DB 0dh,0ah,'EVEN $' 
-    MSG3 DB 0dh,0ah,'ODD $'
-    DV DB 02H
-    
 
-.CODE
-
-MAIN PROC
+.code
+main proc 
     
-    MOV AX,@DATA
-    MOV DS,AX
-    
-    LEA DX,MSG1
-    MOV AH,9
-    INT 21H
-    
-    MOV AH,1
-    INT 21H
-    
-    MOV BL,AL
-    XOR AX,AX
-    SUB BL,30H
-    MOV AL,BL  
-    
-    DIV DV
-    CMP AH,01H
-    JNE EVEN 
-    
-    LEA DX,MSG3
-    MOV AH,9
-    INT 21H 
-    JMP EXIT
-    
-    EVEN:
-        LEA DX,MSG2
-        MOV AH,9
-        INT 21H
+         mov ax,data
+         mov ds,ax
          
-    EXIT:     
-        MOV AH,4CH
-        INT 21H
+         mov ah,9
+         lea dx,msg1
+         int 21h
+         
+         mov ah,1
+         int 21h
+         sub al,48         
+         
+         xor ah,ah
+         mov bl,2
+         div bl
+         cmp ah,0
+         je even
+         jmp odd
+         
+   even:       
+         mov ah,9
+         lea dx,msg2
+         int 21h
+         jmp exit
+   odd:      
+        mov ah,9
+         lea dx,msg3
+         int 21h
     
-MAIN ENDP
-    END MAIN
-                         
-
-
-
-
+    
+   exit:
+    mov ah,4ch
+    int 21h
+    
+    
+main endp
